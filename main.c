@@ -7,7 +7,7 @@
 
 typedef unsigned int uint;
 
-uint loops = 60;
+uint loops = 10;
 uint len = 30;
 char* cells = NULL;
 char* next = NULL;
@@ -39,7 +39,7 @@ uint wrap(int i)
 
 char eval(char *group)
 {
-	static const char liveSet[5][4] = {"110","101","011","010","001"};
+	static const char* liveSet[5] = {"110","101","011","010","001"};
 	for(uint i = 0; i < 5; i++){
 		if(strcmp(group, liveSet[i]) == 0)
 			return '#';
@@ -49,14 +49,16 @@ char eval(char *group)
 
 void evolve(void)
 {
-	for(uint i = 0; i < len; i++){
+	for(int i = 0; i < len; i++){
 		char group[4];
 		group[0]=cells[wrap(i-1)];
 		group[1]=cells[i];
 		group[2]=cells[wrap(i+1)];
 		group[3]='\0';
+		printf("%s ", group);
 		next[i] = eval(group);
 	}
+	printf("\n");
 	memcpy(cells, next, sizeof(char)*len);
 }
 
